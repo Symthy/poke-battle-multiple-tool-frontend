@@ -1,14 +1,9 @@
-type Compatibility = "Advantages" | "Disadvantages" | "Even";
-type PokemonId = string;
-type CompatibilityRecordJson = {
-  displayOrder: number;
-  pokemonId: PokemonId;
-  compatibility?: Compatibility;
-};
-type CompatibilityRecord = {
-  pokemonId: PokemonId;
-  compatibility?: Compatibility;
-};
+import {
+  Compatibility,
+  CompatibilityRecord,
+  CompatibilityRecordJson,
+  PokemonId,
+} from "@/types/compatibility";
 
 export class CompatibilityTable {
   private pokemonIds: PokemonId[];
@@ -50,6 +45,10 @@ export class CompatibilityTable {
           compatibility: this.pokemonIdToCompatibility.get(pokemonId),
         }
       : undefined;
+  }
+
+  rowCount(): number {
+    return this.pokemonIds.length;
   }
 
   removeRecord(order: number) {
