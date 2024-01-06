@@ -1,5 +1,5 @@
 import { CompatibilityTable } from "./CompabilityTable";
-import { ADVANTAGE, DISADVANTAGE } from "./containts";
+import { ADVANTAGE, DISADVANTAGE } from "../containts";
 
 describe("CompatibilityTable", () => {
   let compatibilityTable: CompatibilityTable;
@@ -42,13 +42,12 @@ describe("CompatibilityTable", () => {
   });
 
   it("should merge two compatibility tables", () => {
-    const compatibilityTable1 = new CompatibilityTable();
-    const compatibilityTable2 = new CompatibilityTable();
+    const otherCompatibilityTable2 = new CompatibilityTable();
     const pokemonId1 = "Pikachu";
     const pokemonId2 = "Charizard";
-    compatibilityTable1.put(pokemonId1, ADVANTAGE);
-    compatibilityTable2.put(pokemonId2, DISADVANTAGE);
-    compatibilityTable.merge(compatibilityTable2);
+    compatibilityTable.put(pokemonId1, ADVANTAGE);
+    otherCompatibilityTable2.put(pokemonId2, DISADVANTAGE);
+    compatibilityTable.merge(otherCompatibilityTable2);
     expect(compatibilityTable.getRecord(1)).toEqual({
       pokemonId: pokemonId1,
       compatibility: ADVANTAGE,

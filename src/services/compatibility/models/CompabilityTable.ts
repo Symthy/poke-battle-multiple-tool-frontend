@@ -38,13 +38,15 @@ export class CompatibilityTable {
   }
 
   getRecord(order: number): CompatibilityRecord | undefined {
-    const pokemonId = this.pokemonIds[order - 1];
-    return pokemonId
-      ? {
-          pokemonId: pokemonId,
-          compatibility: this.pokemonIdToCompatibility.get(pokemonId),
-        }
-      : undefined;
+    if (this.rowCount() < order) {
+      return;
+    }
+    const index = order - 1;
+    const pokemonId = this.pokemonIds[index];
+    return {
+      pokemonId: pokemonId,
+      compatibility: this.pokemonIdToCompatibility.get(pokemonId),
+    };
   }
 
   rowCount(): number {
@@ -52,8 +54,12 @@ export class CompatibilityTable {
   }
 
   removeRecord(order: number) {
-    const pokemonId = this.pokemonIds[order - 1];
-    this.pokemonIds.slice(order - 1, 1);
+    if (this.rowCount() < order) {
+      return;
+    }
+    const index = order - 1;
+    const pokemonId = this.pokemonIds[index];
+    this.pokemonIds.splice(index, 1);
     this.pokemonIdToCompatibility.delete(pokemonId);
   }
 
