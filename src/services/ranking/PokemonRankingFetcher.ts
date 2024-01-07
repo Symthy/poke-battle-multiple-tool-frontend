@@ -18,5 +18,7 @@ export class PokemonRankingFetcher {
 }
 
 function convertToPokemonIds(rankingList: PokemonRankingList): PokemonId[] {
-  return rankingList.map((pokemon) => `${pokemon.id}-${pokemon.form}`);
+  return rankingList.map(
+    (pokemon) => `${pokemon.id}-${pokemon.form}` as PokemonId
+  );
 }

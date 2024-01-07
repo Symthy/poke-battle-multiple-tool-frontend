@@ -1,7 +1,7 @@
-import { CompatibilityTable } from "./CompabilityTable";
+import { CompatibilityTable } from "./IndividualCompabilityTable";
 import { ADVANTAGE, DISADVANTAGE } from "../containts";
 
-describe("CompatibilityTable", () => {
+describe("IndividualCompatibilityTable", () => {
   let compatibilityTable: CompatibilityTable;
 
   beforeEach(() => {
@@ -9,7 +9,7 @@ describe("CompatibilityTable", () => {
   });
 
   it("should put and get a record into the table", () => {
-    const pokemonId = "Pikachu";
+    const pokemonId = "3-0";
     compatibilityTable.put(pokemonId, ADVANTAGE);
     expect(compatibilityTable.getRecord(1)).toEqual({
       pokemonId: pokemonId,
@@ -18,7 +18,7 @@ describe("CompatibilityTable", () => {
   });
 
   it("should remove a record from the table", () => {
-    const pokemonId = "Pikachu";
+    const pokemonId = "3-0";
     compatibilityTable.put(pokemonId, ADVANTAGE);
     compatibilityTable.removeRecord(1);
     const record = compatibilityTable.getRecord(1);
@@ -26,8 +26,8 @@ describe("CompatibilityTable", () => {
   });
 
   it("should swap two records in the table", () => {
-    const pokemonId1 = "Pikachu";
-    const pokemonId2 = "Charizard";
+    const pokemonId1 = "3-0";
+    const pokemonId2 = "157-1";
     compatibilityTable.put(pokemonId1, ADVANTAGE);
     compatibilityTable.put(pokemonId2, DISADVANTAGE);
     compatibilityTable.swapRecord(1, 2);
@@ -43,8 +43,8 @@ describe("CompatibilityTable", () => {
 
   it("should merge two compatibility tables", () => {
     const otherCompatibilityTable2 = new CompatibilityTable();
-    const pokemonId1 = "Pikachu";
-    const pokemonId2 = "Charizard";
+    const pokemonId1 = "3-0";
+    const pokemonId2 = "157-1";
     compatibilityTable.put(pokemonId1, ADVANTAGE);
     otherCompatibilityTable2.put(pokemonId2, DISADVANTAGE);
     compatibilityTable.merge(otherCompatibilityTable2);
@@ -59,8 +59,8 @@ describe("CompatibilityTable", () => {
   });
 
   it("should convert the compatibility table to JSON", () => {
-    const pokemonId1 = "Pikachu";
-    const pokemonId2 = "Charizard";
+    const pokemonId1 = "3-0";
+    const pokemonId2 = "157-1";
     compatibilityTable.put(pokemonId1, ADVANTAGE);
     compatibilityTable.put(pokemonId2, DISADVANTAGE);
     const json = compatibilityTable.toJson();
