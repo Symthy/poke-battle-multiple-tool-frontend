@@ -1,19 +1,21 @@
 {
   "name": "poke-battle-multiple-tool-frontend",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest",
+    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --no-warnings\" jest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "dependencies": {
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
+    "js-yaml": "^4.1.0",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
@@ -21,6 +23,8 @@
     "yaml": "^2.3.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.23.7",
+    "@babel/preset-env": "^7.23.7",
     "@storybook/addon-essentials": "^7.6.7",
     "@storybook/addon-interactions": "^7.6.7",
     "@storybook/addon-links": "^7.6.7",
@@ -32,9 +36,12 @@
     "@testing-library/jest-dom": "^6.1.6",
     "@testing-library/react": "^14.1.2",
     "@types/jest": "^29.5.11",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "babel-jest": "^29.7.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "eslint-plugin-storybook": "^0.6.15",
@@ -42,6 +49,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "storybook": "^7.6.7",
     "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }

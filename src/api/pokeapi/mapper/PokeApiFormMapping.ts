@@ -1,5 +1,5 @@
-import YAML from "yaml";
-import fs from "fs";
+import { load } from "js-yaml";
+import { readFileSync } from "fs";
 import { PokemonId } from "@/types/compatibility";
 import path from "path";
 import { CONFIG_DIR } from "@/constants";
@@ -17,7 +17,7 @@ export class PokeApiFormMapping {
   }
 
   private loadMappingsFromYaml(mappingYmlPath: string): Map<PokemonId, number> {
-    const yamlContents = YAML.parse(fs.readFileSync(mappingYmlPath, "utf8"));
+    const yamlContents: any = load(readFileSync(mappingYmlPath, "utf8"));
     const mappings = new Map<PokemonId, number>();
     for (const key in yamlContents.mapping) {
       const value = yamlContents.mapping[key];
