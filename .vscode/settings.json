@@ -1,5 +1,9 @@
 {
   "cSpell.words": ["Pokemons"],
   // ESM化により、jest-runnerのデフォルトコマンドのままでは失敗するので変更
-  "jestrunner.jestCommand": "npm run test --"
+  "jestrunner.jestCommand": "npm run test --",
+  "jestrunner.debugOptions": {
+    // debug時に jestSetup.ts でよく分からない syntaxエラーが起きたが、これで解消できた
+    "runtimeArgs": ["--experimental-vm-modules", "--no-warnings"]
+  }
 }

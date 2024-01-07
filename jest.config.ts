@@ -17,7 +17,6 @@ const jestConfig: JestConfigWithTsJest = {
     ],
     "^.+\\.(js|jsx)$": ["babel-jest", { presets: ["next/babel"] }],
   },
-
   setupFiles: ["<rootDir>/tests/jestSetup.ts"],
 };
 
