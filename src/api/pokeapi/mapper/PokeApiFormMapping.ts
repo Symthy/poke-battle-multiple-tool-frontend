@@ -1,8 +1,9 @@
-import { load } from "js-yaml";
-import { readFileSync } from "fs";
 import { PokemonId } from "@/types/compatibility";
 import path from "path";
 import { CONFIG_DIR } from "@/constants";
+import { loadYaml } from "@/lib/yaml_loader";
+
+type PokeApiFormMappingModel = { mapping: { [k: PokemonId]: number } };
 
 export class PokeApiFormMapping {
   private mappings: Map<PokemonId, number>;
@@ -17,11 +18,12 @@ export class PokeApiFormMapping {
   }
 
   private loadMappingsFromYaml(mappingYmlPath: string): Map<PokemonId, number> {
-    const yamlContents: any = load(readFileSync(mappingYmlPath, "utf8"));
+    const yamlContents = loadYaml<PokeApiFormMappingModel>(mappingYmlPath);
     const mappings = new Map<PokemonId, number>();
     for (const key in yamlContents.mapping) {
-      const value = yamlContents.mapping[key];
-      mappings.set(key as PokemonId, value);
+      const pokeId = key as PokemonId;
+      const value = yamlContents.mapping[pokeId];
+      mappings.set(pokeId, value);
     }
     return mappings;
   }
