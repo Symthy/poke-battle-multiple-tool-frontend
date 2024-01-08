@@ -5,9 +5,15 @@ export type CompatibilityRecord = {
   compatibility?: Compatibility;
 };
 export type CompatibilityRecordJson = {
-  displayOrder: number;
   pokemonId: PokemonId;
   compatibility?: Compatibility;
+};
+
+export type PartyCompatibilityRecordsJson = {
+  displayOrderPokemons: PokemonId[];
+  party: {
+    [ownPokemonId: PokemonId]: CompatibilityRecordJson[];
+  };
 };
 
 export type PokemonNameImage = {
