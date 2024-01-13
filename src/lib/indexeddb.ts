@@ -1,15 +1,10 @@
-import {
-  Compatibility,
-  CompatibilityJson,
-  PartyCompatibilityRecordJson,
-  PokemonId,
-} from "@/types/compatibility";
+import { Compatibility, PokemonId } from "@/types/compatibility";
 import Dexie from "dexie";
 
-export class MyAppDatabase extends Dexie {
+export class PokeBattleIndexedDB extends Dexie {
   pokemonCompatibilities!: Dexie.Table<IPokemonCompatibility, number>;
   parties!: Dexie.Table<IParty, number>;
-  phones!: Dexie.Table<IPartyCompatibility, number>;
+  partyCompatibilities!: Dexie.Table<IPartyCompatibility, number>;
 
   constructor() {
     super("PokeBattleDB");
@@ -25,20 +20,20 @@ export class MyAppDatabase extends Dexie {
 
 export interface IPokemonCompatibility {
   pokemonId: PokemonId;
-  description: string;
-  jsonData: { [key: PokemonId]: Compatibility };
+  description?: string;
+  jsonData: { [id: PokemonId]: Compatibility };
 }
 
 export interface IParty {
   id?: number;
   name?: string;
-  description: string;
+  description?: string;
   pokemonId1: PokemonId;
-  pokemonId2: PokemonId;
-  pokemonId3: PokemonId;
-  pokemonId4: PokemonId;
-  pokemonId5: PokemonId;
-  pokemonId6: PokemonId;
+  pokemonId2?: PokemonId;
+  pokemonId3?: PokemonId;
+  pokemonId4?: PokemonId;
+  pokemonId5?: PokemonId;
+  pokemonId6?: PokemonId;
 }
 
 export interface IPartyCompatibility {

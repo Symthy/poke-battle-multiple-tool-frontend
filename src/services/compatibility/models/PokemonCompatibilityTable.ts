@@ -18,26 +18,21 @@ function isPokemonId(arg: any): arg is PokemonId {
 
 // ポケモン1体に対する相性表
 export class PokemonCompatibilityTable {
-  private _id?: PokemonId;
+  private _id: PokemonId;
   private _description?: string;
   private pokemonIdToCompatibility: Map<PokemonId, Compatibility>;
 
-  constructor();
   constructor(id: PokemonId);
   constructor(recordJson: PokemonCompatibilityTableRecord);
   constructor(arg?: any) {
     this.pokemonIdToCompatibility = new Map();
-    if (arg == null) {
-      return;
-    }
-    if (isPokemonId(arg)) {
-      this._id = arg;
-    }
     if (isPokemonCompatibilityTableRecord(arg)) {
       this._id = arg.pokemonId;
       this._description = arg.description;
       this.restore(arg.compatibilities);
+      return;
     }
+    this._id = arg;
   }
 
   private restore(records: CompatibilityJson) {

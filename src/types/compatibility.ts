@@ -6,7 +6,7 @@ export type CompatibilityRecord = {
 };
 
 export type PokemonCompatibilityTableRecord = {
-  pokemonId?: PokemonId;
+  pokemonId: PokemonId;
   description?: string;
   compatibilities: { [opponentPokemonId: PokemonId]: Compatibility };
 };
