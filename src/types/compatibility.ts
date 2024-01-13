@@ -4,15 +4,31 @@ export type CompatibilityRecord = {
   pokemonId: PokemonId;
   compatibility?: Compatibility;
 };
-export type CompatibilityRecordJson = {
-  pokemonId: PokemonId;
-  compatibility?: Compatibility;
+
+export type PokemonCompatibilityTableRecord = {
+  pokemonId?: PokemonId;
+  description?: string;
+  compatibilities: { [opponentPokemonId: PokemonId]: Compatibility };
 };
 
-export type PartyCompatibilityRecordsJson = {
-  displayOrderPokemons: PokemonId[];
+export type CompatibilityJson = {
+  [opponentPokemonId: PokemonId]: Compatibility;
+};
+
+export type PartyCompatibilityTableRecord = {
+  partyId?: number;
+  orderOpponentPokemons: PokemonId[];
+  partyMembers: PokemonId[];
+  compatibilities: {
+    [ownPokemonId: PokemonId]: PokemonCompatibilityTableRecord;
+  };
+};
+
+export type PartyCompatibilityRecordJson = {
+  partyId?: number;
+  orderOpponentPokemons: PokemonId[];
   party: {
-    [ownPokemonId: PokemonId]: CompatibilityRecordJson[];
+    [ownPokemonId: PokemonId]: CompatibilityJson[];
   };
 };
 

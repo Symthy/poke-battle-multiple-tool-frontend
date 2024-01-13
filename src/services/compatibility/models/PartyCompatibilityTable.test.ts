@@ -1,6 +1,5 @@
 import { PartyCompatibilityTable } from "./PartyCompatibilityTable";
-import { IndividualCompatibilityTable } from "./IndividualCompatibilityTable";
-import { ADVANTAGE, DISADVANTAGE } from "../containts";
+import { ADVANTAGE, DISADVANTAGE } from "../contains";
 
 describe("PartyCompatibilityTable", () => {
   let compatibilityTable: PartyCompatibilityTable;
@@ -12,7 +11,7 @@ describe("PartyCompatibilityTable", () => {
   it("should add an own pokemon to the table", () => {
     const ownPokemonId = "3-0";
     compatibilityTable.addOwnPokemon(ownPokemonId);
-    const ownPokemons = compatibilityTable.displayOrderPokemonIds;
+    const ownPokemons = compatibilityTable.partyMembers;
     expect(ownPokemons).toContain(ownPokemonId);
   });
 
@@ -20,7 +19,7 @@ describe("PartyCompatibilityTable", () => {
     const ownPokemonId = "3-0";
     compatibilityTable.addOwnPokemon(ownPokemonId);
     compatibilityTable.removeOwnPokemon(ownPokemonId);
-    const ownPokemons = compatibilityTable.displayOrderPokemonIds;
+    const ownPokemons = compatibilityTable.partyMembers;
     expect(ownPokemons).not.toContain(ownPokemonId);
   });
 
@@ -52,15 +51,35 @@ describe("PartyCompatibilityTable", () => {
     expect(compatibility).toBe(ADVANTAGE);
   });
 
-  it("should swap the order of two own pokemons", () => {
+  it("should swap the order of two own pokemons in the party", () => {
     const ownPokemonId1 = "3-0";
     const ownPokemonId2 = "157-1";
     compatibilityTable.addOwnPokemon(ownPokemonId1);
     compatibilityTable.addOwnPokemon(ownPokemonId2);
-    compatibilityTable.swapRecord(1, 2);
-    const ownPokemons = compatibilityTable.displayOrderPokemonIds;
+    compatibilityTable.swapOrderParty(1, 2);
+    const ownPokemons = compatibilityTable.partyMembers;
     expect(ownPokemons[0]).toBe(ownPokemonId2);
     expect(ownPokemons[1]).toBe(ownPokemonId1);
+  });
+
+  it("should swap the order of two opponent pokemons", () => {
+    const opponentPokemonId1 = "6-0";
+    const opponentPokemonId2 = "160-0";
+    compatibilityTable.addOwnPokemon("3-0");
+    compatibilityTable.updateCompatibility(
+      "3-0",
+      opponentPokemonId1,
+      ADVANTAGE
+    );
+    compatibilityTable.updateCompatibility(
+      "3-0",
+      opponentPokemonId2,
+      DISADVANTAGE
+    );
+    compatibilityTable.swapOrderOpponent(1, 2);
+    const opponentPokemons = compatibilityTable.displayOrderPokemonIds;
+    expect(opponentPokemons[0]).toBe(opponentPokemonId2);
+    expect(opponentPokemons[1]).toBe(opponentPokemonId1);
   });
 
   it("should convert the compatibility table to JSON", () => {
@@ -68,28 +87,32 @@ describe("PartyCompatibilityTable", () => {
     const ownPokemonId2 = "157-1";
     compatibilityTable.addOwnPokemon(ownPokemonId1);
     compatibilityTable.addOwnPokemon(ownPokemonId2);
-    compatibilityTable.updateCompatibility(ownPokemonId1, "260-0", ADVANTAGE);
+    compatibilityTable.updateCompatibility(ownPokemonId1, "6-0", ADVANTAGE);
     compatibilityTable.updateCompatibility(
       ownPokemonId2,
-      "260-0",
+      "160-0",
       DISADVANTAGE
     );
     const json = compatibilityTable.toJson();
     expect(json).toEqual({
-      displayOrderPokemons: [ownPokemonId1, ownPokemonId2],
-      party: {
-        [ownPokemonId1]: [
-          {
-            pokemonId: "260-0",
-            compatibility: ADVANTAGE,
+      partyId: undefined,
+      partyMembers: ["3-0", "157-1"],
+      orderOpponentPokemons: ["6-0", "160-0"],
+      compatibilities: {
+        "157-1": {
+          compatibilities: {
+            "160-0": "Disadvantages",
           },
-        ],
-        [ownPokemonId2]: [
-          {
-            pokemonId: "260-0",
-            compatibility: DISADVANTAGE,
+          description: undefined,
+          pokemonId: "157-1",
+        },
+        "3-0": {
+          compatibilities: {
+            "6-0": "Advantages",
           },
-        ],
+          description: undefined,
+          pokemonId: "3-0",
+        },
       },
     });
   });

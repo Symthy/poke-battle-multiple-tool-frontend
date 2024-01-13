@@ -1,17 +1,17 @@
-import { IndividualCompatibilityTable } from "./IndividualCompatibilityTable";
-import { ADVANTAGE, DISADVANTAGE } from "../containts";
+import { PokemonCompatibilityTable } from "./PokemonCompatibilityTable";
+import { ADVANTAGE, DISADVANTAGE } from "../contains";
 
-describe("IndividualCompatibilityTable", () => {
-  let compatibilityTable: IndividualCompatibilityTable;
+describe("PokemonCompatibilityTable", () => {
+  let compatibilityTable: PokemonCompatibilityTable;
 
   beforeEach(() => {
-    compatibilityTable = new IndividualCompatibilityTable("260-0");
+    compatibilityTable = new PokemonCompatibilityTable("260-0");
   });
 
   it("should put and get a record into the table", () => {
     const pokemonId = "3-0";
     compatibilityTable.put(pokemonId, ADVANTAGE);
-    expect(compatibilityTable.getRecord("3-0")).toEqual({
+    expect(compatibilityTable.get(pokemonId)).toEqual({
       pokemonId: pokemonId,
       compatibility: ADVANTAGE,
     });
@@ -20,8 +20,8 @@ describe("IndividualCompatibilityTable", () => {
   it("should remove a record from the table", () => {
     const pokemonId = "3-0";
     compatibilityTable.put(pokemonId, ADVANTAGE);
-    compatibilityTable.removeRecord("3-0");
-    const record = compatibilityTable.getRecord("3-0");
+    compatibilityTable.remove(pokemonId);
+    const record = compatibilityTable.get(pokemonId);
     expect(record).toBeUndefined();
   });
 
@@ -31,16 +31,10 @@ describe("IndividualCompatibilityTable", () => {
     compatibilityTable.put(pokemonId1, ADVANTAGE);
     compatibilityTable.put(pokemonId2, DISADVANTAGE);
     const json = compatibilityTable.toJson();
-    expect(json).toEqual([
-      {
-        pokemonId: pokemonId1,
-        compatibility: ADVANTAGE,
-      },
-      {
-        pokemonId: pokemonId2,
-        compatibility: DISADVANTAGE,
-      },
-    ]);
+    expect(json).toEqual({
+      pokemonId: "260-0",
+      compatibilities: { "157-1": "Disadvantages", "3-0": "Advantages" },
+    });
   });
 
   it("should return the correct number of records in the table", () => {

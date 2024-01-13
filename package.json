@@ -1,7 +1,6 @@
 {
   "name": "poke-battle-multiple-tool-frontend",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
@@ -13,6 +12,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "dexie": "^3.2.4",
+    "dexie-react-hooks": "^1.1.7",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "js-yaml": "^4.1.0",

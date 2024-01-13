@@ -1,31 +1,38 @@
 import {
   Compatibility,
-  PartyCompatibilityRecordsJson,
+  PartyCompatibilityTableRecord,
   PokemonId,
 } from "@/types/compatibility";
-import { IndividualCompatibilityTable } from "./IndividualCompatibilityTable";
+import { PokemonCompatibilityTable } from "./PokemonCompatibilityTable";
 
 export class PartyCompatibilityTable {
+  private _partyId?: number;
   private _displayOrderPokemonIds: PokemonId[];
+  private _partyMembers: PokemonId[];
   private _ownPokemonToCompatibilityTable: Map<
     PokemonId,
-    IndividualCompatibilityTable
+    PokemonCompatibilityTable
   >;
-  constructor(recordsJson?: PartyCompatibilityRecordsJson) {
+  constructor(partyCompatibilityRecord?: PartyCompatibilityTableRecord) {
     this._displayOrderPokemonIds = [];
     this._ownPokemonToCompatibilityTable = new Map();
-    if (recordsJson) {
-      this.restore(recordsJson);
+    this._partyMembers = [];
+    if (partyCompatibilityRecord) {
+      this.restore(partyCompatibilityRecord);
     }
   }
 
-  private restore(recordsJson: PartyCompatibilityRecordsJson) {
-    for (const ownPokemonId of recordsJson.displayOrderPokemons) {
-      this.displayOrderPokemonIds.push(ownPokemonId);
-      const ownPokemonRecordsJson = recordsJson.party[ownPokemonId];
-      const ownPokemonTable = new IndividualCompatibilityTable(
-        ownPokemonId,
-        ownPokemonRecordsJson
+  private restore(partyCompatibilityRecord: PartyCompatibilityTableRecord) {
+    this._partyId = partyCompatibilityRecord.partyId;
+    this._displayOrderPokemonIds =
+      partyCompatibilityRecord.orderOpponentPokemons;
+    this._partyMembers = partyCompatibilityRecord.partyMembers;
+    for (const key in partyCompatibilityRecord.compatibilities) {
+      const ownPokemonId = key as PokemonId;
+      const ownPokemonCompatibility =
+        partyCompatibilityRecord.compatibilities[ownPokemonId];
+      const ownPokemonTable = new PokemonCompatibilityTable(
+        ownPokemonCompatibility
       );
       this._ownPokemonToCompatibilityTable.set(ownPokemonId, ownPokemonTable);
     }
@@ -35,17 +42,21 @@ export class PartyCompatibilityTable {
     return this._displayOrderPokemonIds;
   }
 
+  get partyMembers(): PokemonId[] {
+    return this._partyMembers;
+  }
+
   addOwnPokemon(ownPokemonId: PokemonId): void {
-    this.displayOrderPokemonIds.push(ownPokemonId);
+    this._partyMembers.push(ownPokemonId);
     this._ownPokemonToCompatibilityTable.set(
       ownPokemonId,
-      new IndividualCompatibilityTable(ownPokemonId)
+      new PokemonCompatibilityTable(ownPokemonId)
     );
   }
 
   removeOwnPokemon(ownPokemonId: PokemonId): void {
-    const index = this.displayOrderPokemonIds.indexOf(ownPokemonId);
-    this.displayOrderPokemonIds.splice(index, 1);
+    const index = this._partyMembers.indexOf(ownPokemonId);
+    this._partyMembers.splice(index, 1);
     this._ownPokemonToCompatibilityTable.delete(ownPokemonId);
   }
 
@@ -58,13 +69,16 @@ export class PartyCompatibilityTable {
 
   updateCompatibility(
     ownPokemonId: PokemonId,
-    targetPokemonId: PokemonId,
+    opponentPokemonId: PokemonId,
     compatibility: Compatibility
   ): void {
+    if (this._displayOrderPokemonIds.indexOf(opponentPokemonId) === -1) {
+      this._displayOrderPokemonIds.push(opponentPokemonId);
+    }
     const ownPokemonTable =
       this._ownPokemonToCompatibilityTable.get(ownPokemonId);
     if (ownPokemonTable) {
-      ownPokemonTable.put(targetPokemonId, compatibility);
+      ownPokemonTable.put(opponentPokemonId, compatibility);
     }
   }
 
@@ -75,32 +89,41 @@ export class PartyCompatibilityTable {
     const ownPokemonTable =
       this._ownPokemonToCompatibilityTable.get(ownPokemonId);
     if (ownPokemonTable) {
-      const record = ownPokemonTable.getRecord(targetPokemonId);
+      const record = ownPokemonTable.get(targetPokemonId);
       if (record) {
         return record.compatibility;
       }
     }
   }
 
-  swapRecord(order1: number, order2: number) {
-    const pokemonId1 = this.displayOrderPokemonIds[order1 - 1];
-    const pokemonId2 = this.displayOrderPokemonIds[order2 - 1];
-    this.displayOrderPokemonIds[order1 - 1] = pokemonId2;
-    this.displayOrderPokemonIds[order2 - 1] = pokemonId1;
+  swapOrderParty(order1: number, order2: number) {
+    const pokemonId1 = this._partyMembers[order1 - 1];
+    const pokemonId2 = this._partyMembers[order2 - 1];
+    this._partyMembers[order1 - 1] = pokemonId2;
+    this._partyMembers[order2 - 1] = pokemonId1;
   }
 
-  toJson() {
-    const recordsJson: PartyCompatibilityRecordsJson = {
-      displayOrderPokemons: this.displayOrderPokemonIds,
-      party: {},
+  swapOrderOpponent(order1: number, order2: number) {
+    const pokemonId1 = this._displayOrderPokemonIds[order1 - 1];
+    const pokemonId2 = this._displayOrderPokemonIds[order2 - 1];
+    this._displayOrderPokemonIds[order1 - 1] = pokemonId2;
+    this._displayOrderPokemonIds[order2 - 1] = pokemonId1;
+  }
+
+  toJson(): PartyCompatibilityTableRecord {
+    const recordJson: PartyCompatibilityTableRecord = {
+      partyId: this._partyId,
+      orderOpponentPokemons: this.displayOrderPokemonIds,
+      partyMembers: this._partyMembers,
+      compatibilities: {},
     };
-    for (const ownPokemonId of this.displayOrderPokemonIds) {
+    for (const ownPokemonId of this._partyMembers) {
       const ownPokemonTable =
         this._ownPokemonToCompatibilityTable.get(ownPokemonId);
       if (ownPokemonTable) {
-        recordsJson.party[ownPokemonId] = ownPokemonTable.toJson();
+        recordJson.compatibilities[ownPokemonId] = ownPokemonTable.toJson();
       }
     }
-    return recordsJson;
+    return recordJson;
   }
 }
