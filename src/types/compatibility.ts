@@ -1,4 +1,4 @@
-export type Compatibility = "Advantages" | "Disadvantages" | "Even";
+export type Compatibility = "Advantage" | "Disadvantage" | "Even";
 export type PokemonId = `${number}-${number}`;
 export type CompatibilityRecord = {
   pokemonId: PokemonId;

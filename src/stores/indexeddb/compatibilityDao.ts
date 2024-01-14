@@ -6,8 +6,10 @@ import {
 } from "@/types/compatibility";
 import { CompatibilityRepository } from "../compatibilityRepository";
 
-export class CompatibilityStore implements CompatibilityRepository {
-  constructor(private readonly _db: PokeBattleIndexedDB) {}
+export class CompatibilityDao implements CompatibilityRepository {
+  constructor(
+    private readonly _db: PokeBattleIndexedDB = new PokeBattleIndexedDB()
+  ) {}
 
   savePokemonCompatibility(record: PokemonCompatibilityTableRecord): void {
     this._db
@@ -148,3 +150,5 @@ export class CompatibilityStore implements CompatibilityRepository {
       .catch((err) => console.error(err));
   }
 }
+
+export const compatibilityDao = new CompatibilityDao();
