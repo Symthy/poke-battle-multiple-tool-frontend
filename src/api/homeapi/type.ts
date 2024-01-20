@@ -8,7 +8,6 @@ export type SeasonDetail = {
   cId: string;
   rst: number;
   ts2: number;
-  [key: string]: string | number;
 };
 export type RankMatchList = {
   code: number;

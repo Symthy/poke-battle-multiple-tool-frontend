@@ -40,3 +40,6 @@ stories/
 
 # vscode
 .VSCodeCounter
+
+# project
+src/api/pokeapi/mapper/data/*.*

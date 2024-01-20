@@ -1,6 +1,11 @@
-import { PokemonRankingList, RankMatchList, SeasonPath } from "./type";
+import {
+  PokemonRankingList,
+  RankMatchList,
+  SeasonDetail,
+  SeasonPath,
+} from "./type";
 
-export class PokemonHomeApiClient {
+class PokemonHomeApiClient {
   private svRankMatchListUrl: string;
   private svPokemonRankingBaseUrl: string;
   constructor() {
@@ -29,6 +34,18 @@ export class PokemonHomeApiClient {
     return json;
   }
 
+  async getLatestSeason(): Promise<SeasonDetail> {
+    return this.getRankMatchList().then((rankMatchList) => {
+      const latestSeason = Object.keys(rankMatchList.list)
+        .map((s) => parseInt(s, 10))
+        .reduce((a, b) => Math.max(a, b));
+      const latestSeasonDetail = Object.values(
+        rankMatchList.list[latestSeason.toString()]
+      )[0];
+      return latestSeasonDetail;
+    });
+  }
+
   async getPokemonRanking({
     cid,
     rst,
@@ -40,3 +57,5 @@ export class PokemonHomeApiClient {
     return json;
   }
 }
+
+export const pokeHomeApiClient = new PokemonHomeApiClient();

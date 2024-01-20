@@ -6,6 +6,7 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
+    "autogen": "cd scripts/autogen && npm start",
     "lint": "next lint",
     "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules --no-warnings\" jest",
     "storybook": "storybook dev -p 6006",
@@ -21,8 +22,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.0.1",
-    "urql": "^4.0.6",
-    "yaml": "^2.3.4"
+    "urql": "^4.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.23.7",
@@ -52,6 +52,7 @@
     "storybook": "^7.6.7",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
     "typescript": "^5"
   }
 }

@@ -7,7 +7,7 @@ describe("PokeApiFormMapping", () => {
     pokeApiFormMapping = new PokeApiFormMapping();
   });
 
-  it("should load mappings from YAML file", () => {
+  it("should get value", () => {
     pokeApiFormMapping = new PokeApiFormMapping();
     expect(pokeApiFormMapping.getFormPokemonId("892-1"));
   });
