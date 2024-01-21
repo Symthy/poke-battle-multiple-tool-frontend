@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["Dexie", "Pokemons"],
+  "cSpell.words": ["autogen", "Dexie", "pokeapi", "Pokemons", "urql"],
   // ESM化により、jest-runnerのデフォルトコマンドのままでは失敗するので変更
   "jestrunner.jestCommand": "npm run test --",
   "jestrunner.debugOptions": {

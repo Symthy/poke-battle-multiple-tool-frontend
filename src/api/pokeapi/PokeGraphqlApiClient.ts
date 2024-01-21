@@ -1,21 +1,14 @@
+import { urqlClient } from "@/lib/urql";
 import { DocumentNode } from "graphql";
 import {
-  createClient,
-  ClientOptions,
   Client,
-  cacheExchange,
-  fetchExchange,
 } from "urql";
 
 export class PokeGraphqlApiClient {
   private client: Client;
 
   constructor(endpoint: string) {
-    const clientOptions: ClientOptions = {
-      url: endpoint,
-      exchanges: [cacheExchange, fetchExchange],
-    };
-    this.client = createClient(clientOptions);
+    this.client = urqlClient(endpoint);
   }
 
   async query<T>(
@@ -31,6 +24,4 @@ export class PokeGraphqlApiClient {
 }
 
 const endpoint = "https://beta.pokeapi.co/graphql/v1beta";
-const pokeGqlApiClient = new PokeGraphqlApiClient(endpoint);
-
-export default pokeGqlApiClient;
+export const pokeGqlApiClient = new PokeGraphqlApiClient(endpoint);

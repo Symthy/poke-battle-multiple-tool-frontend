@@ -28,7 +28,7 @@ export type PokemonNameAndSprites = {
   }[];
   pokemon_v2_pokemonsprites: {
     pokemon_id: number;
-    sprites: string;
+    sprites: PokemonSprites;
   }[];
 };
 
@@ -72,7 +72,7 @@ export type PokemonNameAndSpritesForForm = {
     pokemon_id: number;
     pokemon_v2_pokemon: {
       pokemon_v2_pokemonsprites: {
-        sprites: string;
+        sprites: PokemonSprites;
       };
     }[];
     pokemon_v2_pokemonformnames: {

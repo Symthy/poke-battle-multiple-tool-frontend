@@ -1,7 +1,7 @@
 import { PokemonId } from "@/types/compatibility";
 import { POKEAPI_FORM_MAPPING } from "./data/PokeApiFormMappingJson";
 
-export class PokeApiFormMapping {
+class PokeApiFormMapping {
   private mappings: Map<PokemonId, number>;
 
   constructor() {
@@ -12,3 +12,5 @@ export class PokeApiFormMapping {
     return this.mappings.get(pokemonId);
   }
 }
+
+export const pokeApiFormMapping = new PokeApiFormMapping();
