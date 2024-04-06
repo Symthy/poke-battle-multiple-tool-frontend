@@ -43,3 +43,7 @@ stories/
 
 # project
 src/api/pokeapi/mapper/data/*.*
+
+## Panda
+styled-system
+styled-system-studio
